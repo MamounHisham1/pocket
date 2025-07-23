@@ -130,4 +130,9 @@
 
         @fluxScripts
     </body>
+        <script>
+            Livewire.on('navigate', url => {
+                window.Livewire.navigate(url);
+            });
+        </script>
 </html>
