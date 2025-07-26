@@ -1,6 +1,6 @@
-<div class="p-6 bg-white shadow-sm">
-    <h2 class="text-xl font-semibold text-gray-800 mb-4">Create Transaction</h2>
-    <form method="POST" wire:submit.prevent="create" class="space-y-4">
+<div>
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">Edit Transaction</h2>
+    <form wire:submit="update" class="space-y-4">
         <flux:select wire:model="category" label="Category" required>
             <flux:select.option value="">Select a category</flux:select.option>
             @foreach($categories as $category)
@@ -19,6 +19,6 @@
 
         <flux:input type="text" wire:model="notes" label="Notes" />
 
-        <flux:button type="submit">Create</flux:button>
+        <flux:button type="submit">Update</flux:button>
     </form>
 </div>

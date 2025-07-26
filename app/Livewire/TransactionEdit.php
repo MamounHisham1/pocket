@@ -4,12 +4,12 @@ namespace App\Livewire;
 
 use App\Models\Category;
 use App\Models\Transaction;
-use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-class TransactionCreate extends Component
+class TransactionEdit extends Component
 {
+    public $transaction;
     public $categories;
     #[Validate('required')]
     public $category;
@@ -22,38 +22,36 @@ class TransactionCreate extends Component
     #[Validate('nullable|string')]
     public $notes;
 
-    public function mount()
+    public function mount(Transaction $transaction)
     {
+        $this->transaction = $transaction;
         $this->categories = Category::where('user_id', auth()->id())->get();
+        $this->category = $transaction->category_id;
+        $this->amount = $transaction->amount;
+        $this->date = $transaction->date;
+        $this->type = $transaction->type;
+        $this->notes = $transaction->notes;
     }
 
-    public function create()
+    public function update()
     {
+        if($this->transaction->user_id !== auth()->id()) {
+            abort(404);
+        }
         $this->validate();
-
-        DB::beginTransaction();
-        Transaction::create([
-            'user_id' => auth()->id(),
+        $this->transaction->update([
             'category_id' => $this->category,
             'amount' => $this->amount,
             'date' => $this->date,
             'type' => $this->type,
             'notes' => $this->notes,
         ]);
-        $user = auth()->user();
-        if ($this->type === 'income') {
-            $user->pocket += $this->amount;
-        } elseif ($this->type === 'expense') {
-            $user->pocket -= $this->amount;
-        }
-        $user->save();
-        DB::commit();
 
         $this->redirectIntended(route('transactions.index', absolute: false));
     }
 
     public function render()
     {
-        return view('livewire.transaction-create');
+        return view('livewire.transaction-edit');
     }
 }

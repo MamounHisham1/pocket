@@ -19,6 +19,8 @@ return new class extends Migration
             $table->enum('type', ['income', 'expense']);
             $table->date('date');
             $table->string('notes')->nullable();
+
+            $table->index(['user_id', 'date']);
             $table->timestamps();
         });
     }

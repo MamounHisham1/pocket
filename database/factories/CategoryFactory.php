@@ -20,7 +20,6 @@ class CategoryFactory extends Factory
         return [
             'user_id' => auth()->id() ?? User::first()->id,
             'name' => fake()->word(),
-            'type' => fake()->randomElement(['income', 'expense']),
         ];
     }
 }
