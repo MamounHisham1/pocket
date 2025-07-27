@@ -14,8 +14,8 @@
             <a href="{{ route('dashboard') }}" class="flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
                 <x-app-logo />
             </a>
-            <span class="inline-block">
-                {{ auth()->user()?->pocket ?? '0.00' }} {{ config('app.currency', 'USD') }}
+            <span class="inline-block font-bold" :class="{ 'text-red-600': {{ auth()->user()->pocket }} < 0 }">
+                ${{ number_format(auth()->user()->pocket, 2) ?? '0.00' }}
             </span>
         </div>
 
@@ -23,8 +23,11 @@
             <flux:navlist.group :heading="__('Navigation')" class="grid">
                 <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
                     wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
-                <flux:navlist.item icon="home" :href="route('transactions.index')"
+                <flux:navlist.item icon="wallet" :href="route('transactions.index')"
                     :current="request()->routeIs('transactions.index')" wire:navigate>{{ __('Transactions') }}
+                </flux:navlist.item>
+                <flux:navlist.item icon="folder" :href="route('categories.index')"
+                    :current="request()->routeIs('categories.index')" wire:navigate>{{ __('Categories') }}
                 </flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>
@@ -115,7 +118,8 @@
                 <flux:menu.separator />
 
                 <flux:menu.radio.group>
-                    <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>{{ __('Settings') }}
+                    <flux:menu.item :href="route('settings.profile')" icon="cog" wire:navigate>
+                        {{ __('Settings') }}
                     </flux:menu.item>
                 </flux:menu.radio.group>
 

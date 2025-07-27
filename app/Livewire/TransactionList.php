@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Transaction;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class TransactionList extends Component
@@ -11,7 +12,7 @@ class TransactionList extends Component
 
     public function mount()
     {
-        $this->transactions = Transaction::where('user_id', auth()->id())->get();
+        $this->transactions = Transaction::with('category')->where('user_id', auth()->id())->get();
     }
 
     public function delete(Transaction $transaction)
@@ -20,7 +21,20 @@ class TransactionList extends Component
             abort(404);
         }
 
+        DB::beginTransaction();
+
+        $user = auth()->user();
+        if($transaction->type == 'income') {
+            $user->pocket -= $transaction->amount;
+        } elseif ($transaction->type == 'expense') {
+            $user->pocket += $transaction->amount;
+        }
+        
+        $user->save();
+        
         $transaction->delete();
+
+        DB::commit();
 
         $this->redirectIntended(route('transactions.index', absolute: false));
     }

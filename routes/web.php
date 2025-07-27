@@ -1,5 +1,8 @@
 <?php
 
+use App\Livewire\CategoryCreate;
+use App\Livewire\CategoryEdit;
+use App\Livewire\CategoryList;
 use App\Livewire\Dashboard;
 use App\Livewire\TransactionList;
 use App\Livewire\TransactionCreate;
@@ -14,6 +17,9 @@ Route::middleware('auth')->group(function() {
     Route::get('/transactions', TransactionList::class)->name('transactions.index');
     Route::get('/transactions/create', TransactionCreate::class)->name('transactions.create');
     Route::get('/transactions/{transaction}/edit', TransactionEdit::class)->name('transactions.edit');
+    Route::get('/categories', CategoryList::class)->name('categories.index');
+    Route::get('/categories/create', CategoryCreate::class)->name('categories.create');
+    Route::get('/categories/{category}/edit', CategoryEdit::class)->name('categories.edit');
 });
 
 Route::middleware(['auth'])->group(function () {

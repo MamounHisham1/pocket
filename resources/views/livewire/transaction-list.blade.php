@@ -18,10 +18,10 @@
         <table class="min-w-full text-sm text-left text-gray-700">
             <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
                 <tr>
+                    <th class="px-4 py-3">Date</th>
                     <th class="px-4 py-3">Category</th>
                     <th class="px-4 py-3">Type</th>
                     <th class="px-4 py-3">Amount</th>
-                    <th class="px-4 py-3">Date</th>
                     <th class="px-4 py-3">Notes</th>
                     <th class="px-4 py-3 text-right">Actions</th>
                 </tr>
@@ -29,10 +29,10 @@
             <tbody class="divide-y divide-gray-200">
                 @foreach ($transactions as $transaction)
                 <tr class="hover:bg-gray-50 transition">
+                    <td class="px-4 py-3">{{ $transaction->date }}</td>
                     <td class="px-4 py-3 font-medium">{{ ucfirst($transaction->category->name) }}</td>
                     <td class="px-4 py-3">{{ ucfirst($transaction->type) }}</td>
                     <td class="px-4 py-3">{{ $transaction->amount }}</td>
-                    <td class="px-4 py-3">{{ $transaction->date }}</td>
                     <td class="px-4 py-3 {{ $transaction->notes ? '' : 'text-gray-400' }}">{{ $transaction->notes ?? 'N/A' }}</td>
                     <td class="px-4 py-3 text-right space-x-2">
                         <flux:button as="a" href="{{ route('transactions.edit', $transaction) }}" variant="primary" class="cursor-pointer">Edit</flux:button>
